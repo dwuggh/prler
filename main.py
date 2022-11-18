@@ -103,7 +103,8 @@ if __name__ == '__main__':
     bot.setup_file(tag)
     page = int(argv[2]) if len(argv) > 2 else 1
     # the oldest prl article was spawn in 1/7/1958!
-    end_year = int(argv[3]) if len(argv) > 3 else 1957
+    # end_year = int(argv[3]) if len(argv) > 3 else 1957
+    end_year = 1957
     while True:
         year = bot.get_recent(page, toc_section)
         page = page + 1
