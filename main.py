@@ -15,7 +15,7 @@ class PRLBot(object):
     def __init__(self) -> None:
         self.session = requests.Session()
         self.ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
-        self.f = open("results.txt", "w")
+        # self.f = open("results.txt", "w")
         self.session.headers.update({
             'user-agent': self.ua
         })
@@ -36,6 +36,10 @@ class PRLBot(object):
             'comments',
             'errata'
             ]
+
+    def setup_file(self, tag):
+        file_name = "results_{}.txt".format(tag)
+        self.f = open(file_name, "w")
 
     def fetch_toc_sections(self):
         url = "https://journals.aps.org/prl/recent"
@@ -94,7 +98,9 @@ if __name__ == '__main__':
     bot = PRLBot()
     argv = sys.argv
     # range: 2 - 11
-    toc_section = [bot.toc_sections[int(argv[1])], ]
+    tag = int(argv[1])
+    toc_section = [bot.toc_sections[tag], ]
+    bot.setup_file(tag)
     page = int(argv[2]) if len(argv) > 2 else 1
     # the oldest prl article was spawn in 1/7/1958!
     end_year = int(argv[3]) if len(argv) > 3 else 1957
