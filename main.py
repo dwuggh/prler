@@ -22,17 +22,17 @@ class PRLBot(object):
         # self.session.headers
         self.toc_sections = [
             'all',
-            'editorials-and-announcements',
-            'general-physics-statistical-and-quantum-mechanics-quantum-information-etc',
-            'gravitation-and-astrophysics',
-            'elementary-particles-and-fields',
-            'nuclear-physics',
-            'atomic-molecular-and-optical-physics',
-            'nonlinear-dynamics-fluid-dynamics-classical-optics-etc',
-            'plasma-and-beam-physics',
-            'condensed-matter-structure-etc',
-            'condensed-matter-electronic-properties-etc',
-            'polymer-soft-matter-biological-climate-and-interdisciplinary-physics',
+            'editorials-and-announcements',                                              # 1
+            'general-physics-statistical-and-quantum-mechanics-quantum-information-etc', # 2
+            'gravitation-and-astrophysics',                                              # 3
+            'elementary-particles-and-fields',                                           # 4
+            'nuclear-physics',                                                           # 5
+            'atomic-molecular-and-optical-physics',                                      # 6
+            'nonlinear-dynamics-fluid-dynamics-classical-optics-etc',                    # 7
+            'plasma-and-beam-physics',                                                   # 8
+            'condensed-matter-structure-etc',                                            # 9
+            'condensed-matter-electronic-properties-etc',                                # 10
+            'polymer-soft-matter-biological-climate-and-interdisciplinary-physics',      # 11
             'comments',
             'errata'
             ]
@@ -58,6 +58,8 @@ class PRLBot(object):
             })
         soup = get_soup(resp.text)
         search_result_list = soup.find_all(class_="article-result")
+        if len(search_result_list) == 0:
+            return None
         last_year = ""
         for item in search_result_list:
             id = item['data-id']
@@ -91,37 +93,15 @@ if __name__ == '__main__':
     import sys
     bot = PRLBot()
     argv = sys.argv
-    # toc_section=[
-    #         'general-physics-statistical-and-quantum-mechanics-quantum-information-etc',
-    #         'atomic-molecular-and-optical-physics',
-    #         'nonlinear-dynamics-fluid-dynamics-classical-optics-etc',
-    #         'condensed-matter-structure-etc',
-    #         'condensed-matter-electronic-properties-etc',
-    #     ]
     # range: 2 - 11
     toc_section = [bot.toc_sections[int(argv[1])], ]
     page = int(argv[2]) if len(argv) > 2 else 1
-    this_year = True
-    while this_year:
+    # the oldest prl article was spawn in 1/7/1958!
+    end_year = int(argv[3]) if len(argv) > 3 else 1957
+    while True:
         year = bot.get_recent(page, toc_section)
         page = page + 1
-        if int(year) == 2016:
-            this_year = False
+        if year is None or year == end_year:
             break
         time.sleep(random.uniform(14., 16.))
     bot.f.close()
-    # bot.fetch_toc_sections()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
