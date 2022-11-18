@@ -68,7 +68,7 @@ class PRLBot(object):
             title = "".join(el.strings)
             url = el['href']
 
-            time.sleep(random.uniform(5., 7.))
+            time.sleep(random.uniform(13., 17.))
             api_url_item = api_url + id + "/abstract"
             abstract = self.session.get(api_url_item, headers={"x-requested-with": "XMLHttpRequest"})
             date = time.strptime(year.split('Published')[-1].strip(), "%d %B %Y")
@@ -100,15 +100,15 @@ if __name__ == '__main__':
     #     ]
     # range: 2 - 11
     toc_section = [bot.toc_sections[int(argv[1])], ]
+    page = int(argv[2]) if len(argv) > 2 else 1
     this_year = True
-    page = 1
     while this_year:
         year = bot.get_recent(page, toc_section)
         page = page + 1
         if int(year) == 2016:
             this_year = False
             break
-        time.sleep(random.uniform(4., 6.))
+        time.sleep(random.uniform(14., 16.))
     bot.f.close()
     # bot.fetch_toc_sections()
 
